@@ -4,34 +4,17 @@ import os
 import csv
 
 # Administrateur Jupyter Hub
-ADMIN = "callisto"
+ADMIN = "ubuntu"
 
 
-print("1 Installation des modules nécessaires pour Jupyter-Hub.")
-print("2 Copie des fichiers dans le répertoire de l'admin Jupyter-Lab.")
-print("3 Installation des groupes et répertoires partagés.")
-print("4 Création des comptes des élèves.")
-print("5 Déploiement de la conf nbgrader pour les profs.")
-print("6 Supprimer des comptes.")
+print("1 Copie des fichiers dans le répertoire de l'admin Jupyter-Lab.")
+print("2 Installation des groupes et répertoires partagés.")
+print("3 Création des comptes des élèves.")
+print("4 Déploiement de la conf nbgrader pour les profs.")
+print("5 Supprimer des comptes.")
 rep = input("Que faire ? : ")
 
 if rep == "1":
-    os.system("apt-get update && apt-get install -yq --no-install-recommends"
-              +" python3-pip"+" git"+" g++"+" gcc"+" libc6-dev"
-              +" libffi-dev"+" libgmp-dev"+" make"+" xz-utils"
-              +" zlib1g-dev"+" gnupg"+" vim"+" texlive-xetex"
-              +" pandoc"+" sudo"+" netbase"+" locales")
-    os.system("pip install SQLAlchemy==1.2.19 nbgrader nbconvert==5.4.1 && "\
-              +"jupyter nbextension install --sys-prefix --py nbgrader --overwrite && "\
-              +"jupyter nbextension enable --sys-prefix --py nbgrader && "\
-              +"jupyter serverextension enable --sys-prefix --py nbgrader && "\
-              +"jupyter nbextension disable --sys-prefix formgrader/main --section=tree && "\
-              +"jupyter serverextension disable --sys-prefix nbgrader.server_extensions.formgrader")
-    os.system(f"pip install mobilechelonian nbconvert pandas matplotlib folium geopy ipython-sql metakernel"\
-              +" pillow nbautoeval jupyterlab-server jupyter_contrib_nbextensions")
-    os.system("jupyter contrib nbextension install --sys-prefix")
-
-if rep == "2":
     os.system(f"mkdir -p /home/{ADMIN}/.jupyter && mkdir /home/{ADMIN}/source")
     os.system(f"cp nbgrader_config.py /home/{ADMIN}/.jupyter/nbgrader_config.py")
     os.system(f"cp header.ipynb /home/{ADMIN}/source")
@@ -40,7 +23,7 @@ if rep == "2":
     os.system(f"cp -R exemples /home/{ADMIN}")
     os.system(f"chown -R {ADMIN} /home/{ADMIN}/exemples")
 
-if rep == "3":
+if rep == "2":
    os.system("/usr/sbin/groupadd ELEVE")
    os.system("/bin/mkdir /var/eleves")
    os.system("/bin/chgrp -R ELEVE /var/eleves")
@@ -58,9 +41,9 @@ if rep == "3":
       os.system(f"/bin/chmod -R 775 /var/eleves/{groupe}/partage")
 
 
-if rep == "4":
-    #file = open('login-NSI-test.csv','r')
-    file = open('login-eleves-rectif.csv','r')
+if rep == "3":
+    file = open('login-NSI.csv','r')
+    #file = open('login-eleves-rectif.csv','r')
 
     reader = csv.DictReader(file, delimiter=',')
 
@@ -100,7 +83,7 @@ if rep == "4":
         fichier.write(f"/var/eleves/{GROUP};{LOGIN}\n")
         fichier.close()
 
-if rep == "5":
+if rep == "4":
    r = "o"
    while r == "O" or r == "o":
        LOGIN = input("Nom d'utilisateur : ")
@@ -134,7 +117,7 @@ if rep == "5":
        r = input("Un autre ? (O/n) ")
 
 
-if rep == "6":
+if rep == "5":
    r = "o"
    while r == "O" or r == "o":
        LOGIN = input("Nom d'utilisateur : ")
